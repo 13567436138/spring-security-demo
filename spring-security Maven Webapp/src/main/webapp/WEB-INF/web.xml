@@ -2,7 +2,7 @@
  "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
-<web-app id="WebApp_1504958927956">
+<web-app >
   <display-name>Archetype Created Web Application</display-name>
   <context-param>
   	 <param-name>contextConfigLocation</param-name> 
@@ -27,6 +27,15 @@
 		<servlet-name>mvc</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
+	<filter>  
+         <filter-name>springSecurityFilterChain</filter-name>  
+         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>  
+     </filter>  
+     <filter-mapping>  
+         <filter-name>springSecurityFilterChain</filter-name>  
+         <url-pattern>/*</url-pattern>  
+     </filter-mapping> 
+        
 	<filter>
 		<filter-name>encodingFilter</filter-name>
 		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -43,23 +52,10 @@
 		<filter-name>encodingFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	<filter>
-		<filter-name>shiroFilter</filter-name>
-		<filter-class>
-			org.springframework.web.filter.DelegatingFilterProxy
-		</filter-class>
-		<init-param>
-            <param-name>targetFilterLifecycle</param-name>
-            <param-value>true</param-value>
-        </init-param>
-	</filter>
-	<filter-mapping>
-		<filter-name>shiroFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
+
 	<filter>
 		<filter-name>sessionFilter</filter-name>
-		<filter-class>com.mark.demo.shiro.filter.SessionFilter</filter-class>
+		<filter-class>com.mark.demo.security.filter.SessionFilter</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>sessionFilter</filter-name>

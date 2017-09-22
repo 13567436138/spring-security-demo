@@ -55,8 +55,8 @@ http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
     <!-- 扫描basePackage下所有以@MyBatisDao注解的接口 -->
     <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
-        <property name="basePackage" value="com.mark.demo.shiro.mapper"/>
-        <property name="annotationClass" value="com.mark.demo.shiro.anno.MyBatisDao"/>
+        <property name="basePackage" value="com.mark.demo.security.mapper"/>
+        <property name="annotationClass" value="com.mark.demo.security.anno.MyBatisDao"/>
     </bean>
 
     <!-- 事务配置 -->
@@ -83,7 +83,7 @@ http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
 
     <!-- 第一个*代表所有的返回值类型，第二个*代表所有的类，第三个*代表类所有方法，最后一个..代表所有的参数 -->
     <aop:config>
-        <aop:pointcut id="transactionPointcut" expression="execution(* com.mark.demo.shiro.service..*ServiceImpl.*(..))"/>
+        <aop:pointcut id="transactionPointcut" expression="execution(* com.mark.demo.security.service..*ServiceImpl.*(..))"/>
         <aop:advisor pointcut-ref="transactionPointcut" advice-ref="transactionAdvice"/>
     </aop:config>
 

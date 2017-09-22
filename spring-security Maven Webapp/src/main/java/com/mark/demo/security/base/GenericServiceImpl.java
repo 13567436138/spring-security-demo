@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.mark.demo.security.entity.Resource;
+
 
 public abstract class GenericServiceImpl<T extends GenericEntity> implements GenericService <T> {
     /**
@@ -69,4 +71,8 @@ public abstract class GenericServiceImpl<T extends GenericEntity> implements Gen
         pageResult.setTotal(page.getTotalCount());
         return pageResult;
     }
+    
+    public List<T> findAll() {
+		return dao.selectAll();
+	}
 }

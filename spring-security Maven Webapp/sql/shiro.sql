@@ -119,11 +119,21 @@ CREATE TABLE `user_role` (
   `roleId` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `message`;
-CREATE TABLE `message` (
-  messageId int primary key AUTO_INCREMENT,
-  receiveTime long,
-  content varchar(1000),
-  receiver varchar(50),
-  `type` int #1  queue ,2 topic
+--Remember Me持久化保存记录
+create table PERSISTENT_LOGINS
+(
+  username  VARCHAR(64) not null,
+  series   VARCHAR(64) not null,
+  token     VARCHAR(64) not null,
+  last_used DATE not null
+);
+
+alter table PERSISTENT_LOGINS
+  add constraint PK_PERSISTENT_LOGIN primary key (series);
+  
+  
+DROP TABLE IF EXISTS `resource`;
+CREATE TABLE `resource` (
+  `role` varchar(100) DEFAULT NULL,
+  `url` varchar(200) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
