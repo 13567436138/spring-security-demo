@@ -17,7 +17,7 @@
    			minimizable="false" maximizable="false" resizable="false" collapsible="false">  
     	<div class="easyui-layout" fit="true">  
             <div region="center" border="false" style="padding:5px;background:#fff;border:1px solid #ccc;">  
-		        <form id="loginForm" method="post">  
+		        <form id="loginForm" action="${base}/common/login/submitlogin" method="post">  
 		            <div style="padding:5px 0;">  
 		                <label for="login">帐号:</label>  
 		                <input type="text" name="userName" style="width:260px;"></input>  
