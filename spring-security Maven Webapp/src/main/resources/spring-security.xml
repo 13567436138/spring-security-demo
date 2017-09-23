@@ -11,17 +11,19 @@
 	<http pattern="/js/**" security="none" />  
     <http pattern="/css/**" security="none" />  
     <http pattern="/index.jsp*" security="none" /> 		
-	<http pattern="/common/login*" security="none" />  	
-	<http auto-config="true" create-session="always" 
-          use-expressions="true"  disable-url-rewriting="true">  
+	<http pattern="/common/login*" security="none" /> 
+	<http pattern="/captcha" security="none"></http> 	
+	<http auto-config="true" create-session="always"  pattern="/**"
+          use-expressions="true"  disable-url-rewriting="true" 
+          access-decision-manager-ref="customAccessDecisionManager" 
+          authentication-manager-ref="authenticationManager">  
         <!-- 配置登录页面  -->   
-        <form-login login-page="/common/login" login-processing-url="/common/login/submitlogin"   
-                    authentication-failure-url="/common/login?error=true"   
-                    default-target-url="/admins/indexes/index"   
-                    always-use-default-target="true"  
-                    authentication-success-handler-ref="authenticationSuccess"   
-                    authentication-failure-handler-ref="exceptionMappingAuthenticationFailureHandler"/>  
-  
+        <form-login login-page="/common/login" login-processing-url="/common/login/submitlogin"    
+                    authentication-success-handler-ref="authenticationSuccess"  
+                    authentication-success-forward-url="/admins/indexes/index" 
+                    authentication-failure-handler-ref="exceptionMappingAuthenticationFailureHandler"
+                    password-parameter="password" username-parameter="userName" />  
+  		<csrf disabled="true"/>
         <!-- "记住我"功能，采用持久化策略(将用户的登录信息存放cookie -->               
         <remember-me use-secure-cookie="true"
         	data-source-ref="dataSource"
@@ -38,13 +40,21 @@
         </session-management>  
           
         <!-- 添加自定义的过滤器 放在FILTER_SECURITY_INTERCEPTOR之前有效 -->             
-        <custom-filter ref="customFilterSecurityInterceptor" before="FILTER_SECURITY_INTERCEPTOR" />   
-          
+        <custom-filter ref="customFilterSecurityInterceptor" before="FILTER_SECURITY_INTERCEPTOR" /> 
+        <!-- <custom-filter before="FORM_LOGIN_FILTER" ref="usernamePasswordAuthenticationFilter" /> -->   
+        
         <!-- <custom-filter ref="switchUserProcessingFilter" after="FILTER_SECURITY_INTERCEPTOR"/>    -->
           
         <anonymous enabled="false" />   
     </http> 	
 			
+	<beans:bean id="usernamePasswordAuthenticationFilter" class="org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter">
+		<beans:property name="filterProcessesUrl" value="/common/login/submitlogin"></beans:property>
+		<beans:property name="authenticationManager" ref="authenticationManager"></beans:property>
+		<beans:property name="usernameParameter" value="userName"></beans:property>
+		<beans:property name="passwordParameter" value="password"></beans:property>
+	</beans:bean>
+	
 	<!-- 登陆成功跳转 -->  
     <beans:bean id="authenticationSuccess" class="com.mark.demo.security.security.CustomSavedRequestAwareAuthenticationSuccessHandler">  
          <beans:property name="defaultTargetUrl" value="/admins/indexes/index"/>  
@@ -54,16 +64,16 @@
     <beans:bean id="logoutSuccessHandler" class="com.mark.demo.security.security.CustomLogoutSuccessHandler">  
          <beans:property name="defaultTargetUrl" value="/common/login"></beans:property>  
     </beans:bean>  
-       
-    
+      
+    <beans:bean id="customAccessDecisionManager" class="com.mark.demo.security.security.CustomAccessDecisionManager"></beans:bean>
+    <beans:bean id="customUserDetailsService" class="com.mark.demo.security.security.CustomUserDetailsService"></beans:bean>
     <!-- 用户登陆处理 -->  
-    <authentication-manager alias="authenticationManager" erase-credentials="false">  
-        <authentication-provider user-service-ref="customUserDetailsService">              
-            <password-encoder hash="md5" base64="true" >  
-                  <salt-source user-property="username"/>  
-            </password-encoder>               
+    <authentication-manager alias="authenticationManager"  erase-credentials="false">  
+        <authentication-provider user-service-ref="customUserDetailsService">                          
         </authentication-provider>  
     </authentication-manager>  
+     
+    
       
     <beans:bean id="exceptionMappingAuthenticationFailureHandler" class="org.springframework.security.web.authentication.ExceptionMappingAuthenticationFailureHandler">  
         <beans:property name="exceptionMappings">  
@@ -74,6 +84,7 @@
             </beans:props>  
         </beans:property>  
     </beans:bean>  
+ 
       
     <!-- <beans:bean id="switchUserProcessingFilter" class="org.springframework.security.web.authentication.switchuser.SwitchUserFilter">  
             <beans:property name="userDetailsService" ref="customUserDetailsService" />  

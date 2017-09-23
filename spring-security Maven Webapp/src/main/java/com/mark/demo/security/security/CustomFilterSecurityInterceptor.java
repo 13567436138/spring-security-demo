@@ -19,6 +19,8 @@ import org.springframework.security.access.SecurityMetadataSource;
 import org.springframework.security.access.intercept.AbstractSecurityInterceptor;
 import org.springframework.security.access.intercept.InterceptorStatusToken;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.stereotype.Service;
@@ -55,10 +57,18 @@ public class CustomFilterSecurityInterceptor extends AbstractSecurityInterceptor
         HttpServletRequest httpRequest = (HttpServletRequest)request;     
         HttpServletResponse httpResponse = (HttpServletResponse)response;  
         
-        if(((HttpServletRequest)request).getSession().getAttribute("user")==null){  
-              httpResponse.sendRedirect(httpRequest.getContextPath()+"/common/login");   
-              return;     
-          }  
+        Authentication auth=SecurityContextHolder.getContext().getAuthentication();
+        
+        if(auth==null){
+        	httpRequest.getRequestDispatcher("/common/login").forward(httpRequest, httpResponse);
+        	return;
+        }
+        
+        Object principal=auth.getPrincipal();
+        if(principal==null){
+        	httpRequest.getRequestDispatcher("/common/login").forward(httpRequest, httpResponse);
+        	return;
+        }
                
        FilterInvocation fi = new FilterInvocation(request, response, chain);     
        invoke(fi);     

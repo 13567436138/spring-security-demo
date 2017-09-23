@@ -22,7 +22,6 @@ import com.mark.demo.security.mapper.UserMapper;
 *2017年9月22日
 *
 */
-@Service("customUserDetailsService")
 public class CustomUserDetailsService implements UserDetailsService {
 	@Autowired
 	private UserMapper userMapper;
@@ -34,11 +33,13 @@ public class CustomUserDetailsService implements UserDetailsService {
              throw new UsernameNotFoundException("用户" + userName + "不存在");    
         }         
      
-        List<Role> authorities = user.getRoleList();   
+        List<Role> authorities = user.getRoleList(); 
         Collection<GrantedAuthority> auths = new ArrayList<GrantedAuthority>();  
-        for(Iterator<Role> iter=authorities.iterator();iter.hasNext();){  
-            auths.add(new SimpleGrantedAuthority(iter.next().getRolename()));  
-        }  
+        if(authorities!=null){
+	        for(Iterator<Role> iter=authorities.iterator();iter.hasNext();){  
+	            auths.add(new SimpleGrantedAuthority(iter.next().getRolename()));  
+	        }  
+        }
         UserDetails userDetails=new UserDetails() {
 			
 			@Override

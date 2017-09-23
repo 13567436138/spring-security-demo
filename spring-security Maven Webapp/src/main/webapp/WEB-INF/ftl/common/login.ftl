@@ -66,26 +66,8 @@
 	         $("#showMsg").html("用户名或密码为空，请输入");  
 	         $("input[name='login']").focus();  
 	    }else{  
-	            //ajax异步提交    
-	           $.ajax({              
-	                  type:"POST",   //post提交方式默认是get  
-	                  url:base+"/common/login/submitlogin",   
-	                  data:$("#loginForm").serialize(),   //序列化                 
-	                  error:function(request) {      // 设置表单提交出错                   
-	                      $("#showMsg").html(request);  //登录错误提示信息  
-	                  },  
-	                  dataType:"json",
-	                  success:function(data) { 
-	                  		
-	                  	  if(data.code=='126000'){
-	                  	  	document.location = base+"/"+data.object;
-	                  	  }else{
-	                  	  	$("#showMsg").html(data.message);  
-	                  	  }
-	                       
-	                  }              
-	            });         
-	        }   
+	           $("#loginForm").submit();        
+	    }   
 	}  
 </script>  
 </html>  
