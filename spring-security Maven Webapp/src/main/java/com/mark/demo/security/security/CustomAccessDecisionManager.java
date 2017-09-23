@@ -35,13 +35,17 @@ public class CustomAccessDecisionManager implements AccessDecisionManager {
 	        Iterator<ConfigAttribute> iter = configAttributes.iterator();          
 	        while(iter.hasNext()){  
 	            ConfigAttribute ca = iter.next();  
-	            String needRole = ((SecurityConfig) ca).getAttribute();  
+	            String needRole = ca.getAttribute();
 	            //gra 为用户所被赋予的权限，needRole为访问相应的资源应具有的权限  
-	            for (GrantedAuthority gra : authentication.getAuthorities()) {  
-	                if (needRole.trim().equals(gra.getAuthority().trim())) {  
-	                    return;  
-	                }  
-	            }  
+	            if(needRole!=null){
+		            for (GrantedAuthority gra : authentication.getAuthorities()) {  
+		                if (needRole.trim().equals(gra.getAuthority().trim())) {  
+		                    return;  
+		                }  
+		            }  
+	            }else{
+	            	return;
+	            }
 	        }  
 	        throw new AccessDeniedException("Access Denied");  
 	  

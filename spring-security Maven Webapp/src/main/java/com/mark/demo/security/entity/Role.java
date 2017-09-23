@@ -1,33 +1,29 @@
 package com.mark.demo.security.entity;
 
-public class Role {
-    private Integer roleid;
+import com.mark.demo.security.base.GenericEntity;
 
-    private String rolename;
+public class Role extends GenericEntity{
 
-    private String roledesc;
+    private String roleName;
 
-    public Integer getRoleid() {
-        return roleid;
-    }
+    private String roleDesc;
 
-    public void setRoleid(Integer roleid) {
-        this.roleid = roleid;
-    }
+	public String getRoleName() {
+		return roleName;
+	}
 
-    public String getRolename() {
-        return rolename;
-    }
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
+	}
 
-    public void setRolename(String rolename) {
-        this.rolename = rolename;
-    }
+	public String getRoleDesc() {
+		return roleDesc;
+	}
 
-    public String getRoledesc() {
-        return roledesc;
-    }
+	public void setRoleDesc(String roleDesc) {
+		this.roleDesc = roleDesc;
+	}
 
-    public void setRoledesc(String roledesc) {
-        this.roledesc = roledesc;
-    }
+
+   
 }

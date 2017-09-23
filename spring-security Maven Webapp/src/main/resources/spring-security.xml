@@ -17,6 +17,7 @@
           use-expressions="true"  disable-url-rewriting="true" 
           access-decision-manager-ref="customAccessDecisionManager" 
           authentication-manager-ref="authenticationManager">  
+         <intercept-url access="ROLE_ADMIN" pattern="/admins/**"/>
         <!-- 配置登录页面  -->   
         <form-login login-page="/common/login" login-processing-url="/common/login/submitlogin"    
                     authentication-success-handler-ref="authenticationSuccess"  
